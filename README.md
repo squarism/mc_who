@@ -35,3 +35,4 @@ If people are playing.
 ## TODO
 
 - json output
+- why do DNS names not work?  Can I workaround?
