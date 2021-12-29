@@ -1,19 +1,37 @@
 # Minecraft Who
 
-A mostly hardcoded program to quickly check on players on a server.
+A CLI program to quickly print the list of players on a minecraft server.
 
-## Setup
 
-Set these ENVs:
+## Usage
 
 ```
-MCWHO_HOST=
-MCWHO_PORT=
-MCWHO_RCON_PASSWORD=
+Usage:
+  mcwho [flags...] [arg...]
+
+Minecraft Who
+
+Flags:
+  --help                       # Displays help for the current command.
+  --host, -h (required)        # The Minecraft server IP, not a DNS name
+  --password, -r (required)    # The RCON password
+  --port, -p (default: 25575)  # The Minecraft RCON port, not the game port
 ```
 
-Host needs to be an IP and not a DNS name.
+This will output something like:
+```
+[0/10] <nobody>
+```
+If no one is on the server.
 
 
-Or, run it like this: `mcwho --host=<ip> --port=<port> --rcon-password=<pass>`
+Or, it will print
+```
+[3/10] Player1|Player2|Player3
+```
+If people are playing.
 
+
+## TODO
+
+- json output
