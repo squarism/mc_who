@@ -1,0 +1,6 @@
+version: 2.0
+shards:
+  rconcr:
+    git: https://github.com/straight-shoota/rconcr.git
+    version: 0.1.0+git.commit.5ba1cdd8f330e79f1babf4a9c4369c2334b6ccd9
+
