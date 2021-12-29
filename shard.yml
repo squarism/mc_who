@@ -10,6 +10,8 @@ version: 0.1.0
 dependencies:
   rconcr:
     github: straight-shoota/rconcr
+  admiral:
+    github: jwaldrip/admiral.cr
 
 # development_dependencies:
 #   webmock:

@@ -8,25 +8,8 @@ require "./spec_helper"
 describe "Who" do
 
   # TODO: split config concerns out to a new class
-  describe "configuration and flags" do
-    it "is not valid when ENVs are not set" do
-      who = Who.new
-      who.env_valid?.should eq false
-    end
-
-    it "is valid when ENVs are set" do
-      ENV["MCWHO_HOST"] = "host"
-      ENV["MCWHO_PORT"] = "port"
-      ENV["MCWHO_RCON_PASSWORD"] = "pass"
-
-      who = Who.new
-      who.env_valid?.should eq true
-
-      ENV["MCWHO_HOST"] = nil
-      ENV["MCWHO_PORT"] = nil
-      ENV["MCWHO_RCON_PASSWORD"] = nil
-    end
-  end
+  # describe "configuration and flags" do
+  # end
 
   describe "player parsing" do
 
@@ -75,6 +58,17 @@ describe "Who" do
 
     it "handles many" do
       Who.new.split_player_names("Bob, Ted").should eq ["Bob", "Ted"]
+    end
+  end
+
+  describe "formatting" do
+    it "prints the player info as text" do
+      players = Players.new
+      players.count = 2
+      players.max = 2
+      players.list = ["Bob", "Ted"]
+
+      Who.new.text(players).should eq "[2/2] Bob|Ted"
     end
   end
 

@@ -1,21 +1,21 @@
 require "rconcr"
 
 struct Players
-  property count : Int32 | String
-  property max : Int32 | String
-  property list : Array(String) | String
+  property count : Int32 | Nil
+  property max : Int32 | Nil
+  property list : Array(String) | Nil
 
   def initialize()
-    @count = "UNKNOWN"
-    @max = "UNKNOWN"
-    @list = "UNKNOWN"
+    @count = nil
+    @max = nil
+    @list = nil
   end
 end
 
 class Who
 
-  def players
-    RCON::Client.open(ENV["MCWHO_HOST"], ENV["MCWHO_PORT"], ENV["MCWHO_RCON_PASSWORD"]) do |client|
+  def players(host, port, password)
+    RCON::Client.open(host, port, password) do |client|
       response = client.command "/list"
       if response
         response
@@ -25,32 +25,42 @@ class Who
     end
   end
 
-  def env_valid?
-    begin
-      ENV["MCWHO_HOST"] != nil && ENV["MCWHO_PORT"] != nil && ENV["MCWHO_RCON_PASSWORD"] != nil
-    rescue KeyError
-      false
-    end
-  end
-
   def parse_players(string)
     matches = /There are (\d) of a max of (\d) players online: (.*)\n/.match(string)
     return nil if !matches
     list = matches.try &.[3]
 
-    count = matches[1].to_i || "UNKNOWN"
-    max = matches[2].to_i || "UNKNOWN"
+    count = matches[1].to_i || nil
+    max = matches[2].to_i || nil
 
     players = Players.new
     players.count = count
     players.max = max
-    players.list = split_player_names(matches.try &.[3])
+    players.list = split_player_names(list)
     players
   end
 
   def split_player_names(string)
     return [] of String if string == ""
     string.split(",").map(&.strip)
+  end
+
+  def text(players)
+    return nil if !players
+
+    # make variables here from the players struct because
+    # crystal has trouble understanding the types in a struct (idk) and you get type errors
+    list = players.list
+    if list && list.size == 0
+      player_names = "<nobody>"
+    else
+      player_names = list ? list.join("|") : "UNKNOWN"
+    end
+
+    count = players.count ? players.count : "UNKNOWN"
+    max = players.max ? players.max : "UNKNOWN"
+
+    "[#{count}/#{max}] #{player_names}"
   end
 
 end
