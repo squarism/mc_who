@@ -1,6 +1,11 @@
+# crystal specifics
 /lib/
 /bin/
+*.o
+main
 
+
+# other typicals
 .DS_Store
 /.tags
 /.tags_sorted_by_file
